@@ -1,21 +1,23 @@
-import React from 'react';
-import './index.scss';
-
-function Collection({ name, images }) {
-  return (
-    <div className="collection">
-      <img className="collection__big" src={images[0]} alt="Item" />
-      <div className="collection__bottom">
-        <img className="collection__mini" src={images[1]} alt="Item" />
-        <img className="collection__mini" src={images[2]} alt="Item" />
-        <img className="collection__mini" src={images[3]} alt="Item" />
-      </div>
-      <h4>{name}</h4>
-    </div>
-  );
-}
+import React from "react";
+import { Collection } from "./Collection";
+import "./index.scss";
 
 function App() {
+  const [searchValue, setSearchValue] = React.useState("");
+  const [collections, setCollections] = React.useState([]);
+
+  React.useEffect(() => {
+    fetch("https://64c08ade0d8e251fd1122abc.mockapi.io/photo_collection")
+      .then((res) => res.json())
+      .then((json) => {
+        setCollections(json);
+      })
+      .catch((error) => {
+        console.warn(error);
+        alert("Data error");
+      });
+  }, []);
+
   return (
     <div className="App">
       <h1>Моя коллекция фотографий</h1>
@@ -27,18 +29,21 @@ function App() {
           <li>Архитектура</li>
           <li>Города</li>
         </ul>
-        <input className="search-input" placeholder="Поиск по названию" />
+        <input
+          value={searchValue}
+          onChange={(e) => setSearchValue(e.target.value)}
+          className="search-input"
+          placeholder="Поиск по названию"
+        />
       </div>
       <div className="content">
-        <Collection
-          name="Путешествие по миру"
-          images={[
-            'https://images.unsplash.com/photo-1540959733332-eab4deabeeaf?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8MTN8fGNpdHl8ZW58MHx8MHx8&auto=format&fit=crop&w=500&q=60',
-            'https://images.unsplash.com/photo-1560840067-ddcaeb7831d2?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8NDB8fGNpdHl8ZW58MHx8MHx8&auto=format&fit=crop&w=500&q=60',
-            'https://images.unsplash.com/photo-1531219572328-a0171b4448a3?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8Mzl8fGNpdHl8ZW58MHx8MHx8&auto=format&fit=crop&w=500&q=60',
-            'https://images.unsplash.com/photo-1573108724029-4c46571d6490?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8MzR8fGNpdHl8ZW58MHx8MHx8&auto=format&fit=crop&w=500&q=60',
-          ]}
-        />
+        {collections
+          .filter((obj) =>
+            obj.name.toLowerCase().includes(searchValue.toLocaleLowerCase())
+          )
+          .map((obj, index) => (
+            <Collection key={index} name={obj.name} images={obj.photos} />
+          ))}
       </div>
       <ul className="pagination">
         <li>1</li>
