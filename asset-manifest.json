@@ -1,0 +1,13 @@
+{
+  "files": {
+    "main.css": "/photosCollection/static/css/main.07eedc18.css",
+    "main.js": "/photosCollection/static/js/main.5aae9cb1.js",
+    "index.html": "/photosCollection/index.html",
+    "main.07eedc18.css.map": "/photosCollection/static/css/main.07eedc18.css.map",
+    "main.5aae9cb1.js.map": "/photosCollection/static/js/main.5aae9cb1.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.07eedc18.css",
+    "static/js/main.5aae9cb1.js"
+  ]
+}
